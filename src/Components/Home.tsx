@@ -13,16 +13,16 @@ interface ResponseData {
 const Home = () => {
   const [response, setResponse] = useState<ResponseData[]>([]);
 
-  useEffect(() => {
-    getProductData();
-    return () => {};
-  }, []);
-
   const getProductData = async () => {
     const apiResponse = await fetch('https://fakestoreapi.com/products');
     const responseData: ResponseData[] = await apiResponse.json();
     setResponse(responseData);
   };
+
+  useEffect(() => {
+    getProductData();
+    return () => {};
+  }, []);
 
   if (response.length === 0) return <Loader />;
 

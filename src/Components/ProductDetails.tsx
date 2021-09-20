@@ -16,11 +16,6 @@ const ProductDetails = () => {
   const [product, setProduct] = useState<Product>();
   const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    getProductData(parseInt(id, 10));
-    return () => {};
-  }, []);
-
   const getProductData = async (pId: number) => {
     try {
       const response = await fetch(`https://fakestoreapi.com/products/${pId}`);
@@ -32,6 +27,11 @@ const ProductDetails = () => {
       setError(true);
     }
   };
+
+  useEffect(() => {
+    getProductData(parseInt(id, 10));
+    return () => {};
+  }, []);
 
   if (isLoaded && product) {
     const { image, title, price, description } = product;
