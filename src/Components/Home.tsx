@@ -1,5 +1,5 @@
-import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Loader from './Loader';
 
 interface ResponseData {
@@ -10,40 +10,25 @@ interface ResponseData {
   image: string;
 }
 
-interface Props {}
+const Home = () => {
+  const [response, setResponse] = useState<ResponseData[]>([]);
+  const history = useHistory();
 
-interface State {
-  response: ResponseData[];
-}
-
-export default class Home extends React.Component<
-  RouteComponentProps<Props>,
-  State
-> {
-  constructor(props: RouteComponentProps<Props>) {
-    super(props);
-    this.state = {
-      response: [],
-    };
-  }
-
-  componentDidMount() {
-    this.getProductData();
-  }
-
-  getProductData = async () => {
+  const getProductData = async () => {
     const apiResponse = await fetch('https://fakestoreapi.com/products');
-    const responseData = await apiResponse.json();
-    this.setState({
-      response: responseData,
-    });
+    const responseData: ResponseData[] = await apiResponse.json();
+    setResponse(responseData);
   };
 
-  render() {
-    const { response } = this.state;
-    const { history } = this.props;
-    if (response.length === 0) return <Loader />;
-    return (
+  useEffect(() => {
+    getProductData();
+    return () => {};
+  }, []);
+
+  if (response.length === 0) return <Loader />;
+
+  return (
+    <div>
       <div>
         <div className="product-list">
           {response.map((data) => (
@@ -65,6 +50,8 @@ export default class Home extends React.Component<
           ))}
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default Home;

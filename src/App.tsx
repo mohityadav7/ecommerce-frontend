@@ -8,18 +8,16 @@ import About from './Components/About';
 import Header from './Components/Header';
 import ProductDetails from './Components/ProductDetails';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <>
-        <Header />
-        <Switch>
-          <Route component={Home} path="/" exact />
-          <Route component={Contact} path="/contact" exact />
-          <Route component={About} path="/about" exact />
-          <Route component={ProductDetails} path="/products/:id" exact />
-        </Switch>
-      </>
-    );
-  }
-}
+const App = () => (
+  <>
+    <Header />
+    <Switch>
+      <Route component={Home} path="/" exact />
+      <Route component={Contact} path="/contact" exact />
+      <Route component={About} path="/about" exact />
+      <Route component={ProductDetails} path="/products/:id" exact />
+    </Switch>
+  </>
+);
+
+export default App;
