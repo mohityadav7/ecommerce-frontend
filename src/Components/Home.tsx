@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import Loader from './Loader';
 
 interface ResponseData {
@@ -16,8 +16,11 @@ interface State {
   response: ResponseData[];
 }
 
-export default class Home extends React.Component<Props, State> {
-  constructor(props: Props) {
+export default class Home extends React.Component<
+  RouteComponentProps<Props>,
+  State
+> {
+  constructor(props: RouteComponentProps<Props>) {
     super(props);
     this.state = {
       response: [],
@@ -38,17 +41,17 @@ export default class Home extends React.Component<Props, State> {
 
   render() {
     const { response } = this.state;
+    const { history } = this.props;
     if (response.length === 0) return <Loader />;
     return (
       <div>
         <div className="product-list">
           {response.map((data) => (
-            <Link
-              className="product-card-container"
-              to={`/products/${data.id}`}
-              key={data.id}
-            >
-              <div className="product-card">
+            <div className="product-card-container" key={data.id}>
+              <div
+                className="product-card"
+                onClick={() => history.push(`/products/${data.id}`)}
+              >
                 <img src={data.image} alt="product" />
                 <div className="product-title">{data.title}</div>
                 <div className="product-price">${data.price}</div>
@@ -58,7 +61,7 @@ export default class Home extends React.Component<Props, State> {
                     : data.description}
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>
