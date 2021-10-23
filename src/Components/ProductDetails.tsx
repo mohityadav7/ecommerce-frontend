@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Product } from './Home';
 import Loader from './Loader';
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  image: string;
-}
 
 const ProductDetails = () => {
   const [isLoaded, setIsLoaded] = useState(false);

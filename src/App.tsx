@@ -1,6 +1,4 @@
 import React from 'react';
-import './App.css';
-import './Components/styles/Common.css';
 import { Switch, Route } from 'react-router-dom';
 import Contact from './Components/Contact';
 import Home from './Components/Home';
@@ -16,6 +14,7 @@ const App = () => (
       <Route component={Contact} path="/contact" exact />
       <Route component={About} path="/about" exact />
       <Route component={ProductDetails} path="/products/:id" exact />
+      {/* <Route component={} */}
     </Switch>
   </>
 );

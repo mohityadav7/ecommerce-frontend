@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import Loader from './Loader';
+import ProductCard from './ProductCard';
 
-interface ResponseData {
+export interface Product {
   id: number;
   title: string;
   description: string;
@@ -11,13 +11,12 @@ interface ResponseData {
 }
 
 const Home = () => {
-  const [response, setResponse] = useState<ResponseData[]>([]);
-  const history = useHistory();
+  const [products, setProducts] = useState<Product[]>([]);
 
   const getProductData = async () => {
     const apiResponse = await fetch('https://fakestoreapi.com/products');
-    const responseData: ResponseData[] = await apiResponse.json();
-    setResponse(responseData);
+    const responseData: Product[] = await apiResponse.json();
+    setProducts(responseData);
   };
 
   useEffect(() => {
@@ -25,30 +24,14 @@ const Home = () => {
     return () => {};
   }, []);
 
-  if (response.length === 0) return <Loader />;
+  if (products.length === 0) return <Loader />;
 
   return (
-    <div>
-      <div>
-        <div className="product-list">
-          {response.map((data) => (
-            <div className="product-card-container" key={data.id}>
-              <div
-                className="product-card"
-                onClick={() => history.push(`/products/${data.id}`)}
-              >
-                <img src={data.image} alt="product" />
-                <div className="product-title">{data.title}</div>
-                <div className="product-price">${data.price}</div>
-                <div className="product-description">
-                  {data.description.length > 100
-                    ? `${data.description.substr(0, 100)}...`
-                    : data.description}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="container">
+      <div className="row gy-3 pt-3">
+        {products.map((product) => (
+          <ProductCard product={product} key={product.id} />
+        ))}
       </div>
     </div>
   );
