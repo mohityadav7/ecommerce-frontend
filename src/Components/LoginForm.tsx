@@ -1,33 +1,43 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../actions';
+import { setCookie } from '../utils';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('mohit@gmail.com');
   const [password, setPassword] = useState('mohit');
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(email, password);
+
     try {
-      const response = await fetch('http://localhost:8000/api/v1/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/v1/users/login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
       const data = await response.json();
-      console.log(data);
+      dispatch(loginSuccess(data));
+      setCookie('token', data.token, 7);
+      history.push('/');
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ maxWidth: '600px' }}>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="loginEmailInput" className="form-label">

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const RegisterForm = () => {
   const [name, setName] = useState('Mohit');
@@ -12,7 +13,7 @@ const RegisterForm = () => {
     console.log(email, password);
     try {
       const response: any = await fetch(
-        'http://localhost:8000/api/v1/users/createUser',
+        `${process.env.REACT_APP_API_URL}/api/v1/users/createUser`,
         {
           method: 'POST',
           headers: {
@@ -33,7 +34,7 @@ const RegisterForm = () => {
     }
   };
   return (
-    <div className="container">
+    <div className="container" style={{ maxWidth: '600px' }}>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="nameInput" className="form-label">
@@ -119,6 +120,9 @@ const RegisterForm = () => {
           Register
         </button>
       </form>
+      <p className="mt-4">
+        Already have an account? <Link to="/auth/login">Login</Link>
+      </p>
     </div>
   );
 };

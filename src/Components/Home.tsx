@@ -14,14 +14,21 @@ const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   const getProductData = async () => {
-    const apiResponse = await fetch('https://fakestoreapi.com/products');
-    const responseData: Product[] = await apiResponse.json();
-    setProducts(responseData);
+    try {
+      const apiResponse = await fetch('https://fakestoreapi.com/products');
+      const responseData: Product[] = await apiResponse.json();
+      setProducts(responseData);
+    } catch (err) {
+      console.log(err);
+      setProducts([]);
+    }
   };
 
   useEffect(() => {
     getProductData();
-    return () => {};
+    return () => {
+      setProducts([]);
+    };
   }, []);
 
   if (products.length === 0) return <Loader />;
