@@ -1,4 +1,5 @@
 import { LOGIN_SUCCESS, LOGOUT_SUCCESS } from '../constants/ActionTypes';
+import { setCookie } from '../utils';
 
 const initialState: IUserInfo = {
   token: '',
@@ -22,6 +23,7 @@ interface IAction {
 export default function user(state = initialState, action: IAction) {
   switch (action.type) {
     case LOGIN_SUCCESS:
+      if (action.payload.token) setCookie('token', action.payload.token, 7);
       return {
         ...state,
         token: action.payload.token,
